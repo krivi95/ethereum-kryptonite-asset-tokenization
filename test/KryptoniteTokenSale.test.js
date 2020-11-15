@@ -16,6 +16,7 @@ const expect = chai.expect;
 // Contracts for testing
 const KryptoniteToken = artifacts.require("./KryptoniteToken.sol");
 const KryptoniteTokenSale = artifacts.require("./KryptoniteTokenSale.sol");
+const KYCContract = artifacts.require("./KYCContract.sol");
 
 contract("KryptoToken: Initial supply test", async (accounts) => {
     /**
@@ -38,7 +39,11 @@ contract("KryptoToken: Initial supply test", async (accounts) => {
     
     it("Should be possible to buy tokens", async () => {
         let instanceKryptoniteToken = await KryptoniteToken.deployed();
+        let instanceKYC = await KYCContract.deployed(); 
         let instanceKryptoniteTokenSale = await KryptoniteTokenSale.deployed();
+
+        // Approve address through KYC so the user could buy
+        instanceKYC.approveAddress(anotherAccount);
 
         // Sent ether to KryptoniteTokenSale smart contract and receive tokens in return
         balanceBefore = await instanceKryptoniteToken.balanceOf(anotherAccount);
