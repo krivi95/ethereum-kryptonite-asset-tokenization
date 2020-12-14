@@ -40,7 +40,7 @@ class App extends Component {
 
       this.kryptoniteTokenSale = new this.web3.eth.Contract(
         KryptoniteTokenSale.abi,
-        KryptoniteToken.networks[this.networkId] && KryptoniteToken.networks[this.networkId].address
+        KryptoniteTokenSale.networks[this.networkId] && KryptoniteTokenSale.networks[this.networkId].address
       );
 
       this.kycContract = new this.web3.eth.Contract(
@@ -55,6 +55,7 @@ class App extends Component {
         contractContext: {
           kryptoniteToken: this.kryptoniteToken,
           kryptoniteTokenSale: this.kryptoniteTokenSale,
+          kryptoniteTokenSaleAddress: KryptoniteTokenSale.networks[this.networkId].address,
           kycContract: this.kycContract,
           web3: this.web3,
           accounts: this.accounts

@@ -6,7 +6,6 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -32,6 +31,9 @@ const useStyles = makeStyles({
         fontSize: "15px",
         fontFamily: 'monospace',
         fontWeight: 'lighter',
+        "&:hover": {
+            backgroundColor: "#282c34"
+        }
     },
     text: {
         color: 'white',
@@ -73,7 +75,6 @@ export default function WhitelistAddress(props) {
                     <Grid item xs={12}>
                         <TextField
                             className={classes.button}
-                            defaultValue="color"
                             InputProps={{
                                 className: classes.input
                             }}

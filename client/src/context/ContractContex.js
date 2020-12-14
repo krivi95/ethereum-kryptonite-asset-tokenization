@@ -6,6 +6,7 @@ import React from "react";
 const ContractContex = React.createContext({
     kryptoniteToken: null,
     kryptoniteTokenSale: null,
+    kryptoniteTokenSaleAddress: null,
     kycContract: null,
     web3: null,
     accounts: null
