@@ -27,11 +27,6 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
     },
-    button: {
-        "&:hover": {
-            backgroundColor: "#282c34"
-        }
-    },
     right: {
         marginLeft: "auto",
         "&:hover": {
@@ -40,16 +35,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Header() {
+export default function AdminHeader() {
     const classes = useStyles();
     const [redirectPage, setRedirectPage] = useState(null);
 
-    function loginPage() {
-        setRedirectPage(<Redirect push to="/login" />);
-    }
-
-    function statusPage() {
-        setRedirectPage(<Redirect push to="/status" />);
+    function logout() {
+        setRedirectPage(<Redirect push to="/" />);
     }
 
     if (redirectPage != null) {
@@ -66,8 +57,7 @@ export default function Header() {
                             </IconButton>
                         </Link>
                         <Typography variant="h6">Kryptonite Token</Typography>
-                        <Button color="inherit" className={classes.right} onClick={statusPage}>Status</Button>
-                        <Button color="inherit" className={classes.button} onClick={loginPage}>Login</Button>
+                        <Button color="inherit" className={classes.right} onClick={logout}>Logout</Button>
                     </Toolbar>
                 </AppBar>
             </div>

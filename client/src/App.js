@@ -9,7 +9,13 @@ import getWeb3 from "./getWeb3";
 
 // Local ReactJs components
 import HomepageScreen from "./screens/HomepageScreen";
+import LoginScreen from "./screens/LoginScreen";
+import StatusScreen from "./screens/StatusScreen";
+import AdminDashboardScreen from "./screens/AdminDashboardScreen";
 import ContractContex from "./context/ContractContex";
+
+// React Router
+import { Route, BrowserRouter as Router } from "react-router-dom";
 
 import "./App.css";
 
@@ -73,14 +79,23 @@ class App extends Component {
 
   render() {
     if (!this.state.web3Loaded) {
-      return <div>Loading Web3, accounts, and contract...</div>;
+      return <div className="App">
+        <h1>
+          Loading Web3, accounts, and contract...
+        </h1>
+      </div>;
     }
     return (
-      <div className="App">
-        <ContractContex.Provider value={this.state.contractContext}>
-          <HomepageScreen />
-        </ContractContex.Provider>
-      </div>
+      <Router>
+        <div className="App">
+          <ContractContex.Provider value={this.state.contractContext}>
+            <Route path="/" exact component={HomepageScreen}></Route>
+            <Route path="/login" component={LoginScreen}></Route>
+            <Route path="/status" component={StatusScreen}></Route>
+            <Route path="/admin" component={AdminDashboardScreen}></Route>
+          </ContractContex.Provider>
+        </div>
+      </Router>
     );
   }
 }
