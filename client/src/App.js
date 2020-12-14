@@ -8,7 +8,8 @@ import KYCContract from "./contracts/KYCContract.json";
 import getWeb3 from "./getWeb3";
 
 // Local ReactJs components
-import HomepageScreen from "./screens/HomepageScreen"
+import HomepageScreen from "./screens/HomepageScreen";
+import ContractContex from "./context/ContractContex";
 
 import "./App.css";
 
@@ -16,7 +17,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      web3Loaded: false
+      web3Loaded: false,
+      contractContext: null
     }
   }
 
@@ -46,10 +48,19 @@ class App extends Component {
         KYCContract.networks[this.networkId] && KYCContract.networks[this.networkId].address
       );
 
-      // Loading is finished
+      // Loading is finished.
+      // Setting up the contract context so other components could use the contract abi. 
       this.setState({
-        web3Loaded: true
+        web3Loaded: true,
+        contractContext: {
+          kryptoniteToken: this.kryptoniteToken,
+          kryptoniteTokenSale: this.kryptoniteTokenSale,
+          kycContract: this.kycContract,
+          web3: this.web3,
+          accounts: this.accounts
+        }
       });
+
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -59,26 +70,15 @@ class App extends Component {
     }
   };
 
-  runExample = async () => {
-    const { accounts, contract } = this.state;
-
-    // Stores a given value, 5 by default.
-    await contract.methods.set(5).send({ from: accounts[0] });
-
-    // Get the value from the contract to prove it worked.
-    const response = await contract.methods.get().call();
-
-    // Update state with the result.
-    this.setState({ storageValue: response });
-  };
-
   render() {
     if (!this.state.web3Loaded) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
       <div className="App">
-        <HomepageScreen/>
+        <ContractContex.Provider value={this.state.contractContext}>
+          <HomepageScreen />
+        </ContractContex.Provider>
       </div>
     );
   }
