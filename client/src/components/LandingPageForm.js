@@ -8,6 +8,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 
+// Firebase
+import app from '../firebase/firebase';
+
 
 const useStyles = makeStyles({
     container: {
@@ -68,8 +71,18 @@ export default function LandingPageForm(props) {
         setAddress(event.target.value);
     }
 
+    // Creating new requst to database
     async function handleSubmit(event) {
-        alert('Successful registration.');
+        const requestsRef = app.database().ref('requests');
+        const request = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            address: address,
+            kyc: false
+        }
+        requestsRef.push(request);
+        alert('You have successfully registered! Please wait until KYC is completed. You may check the porgress on status page.');
     }
 
     return (
