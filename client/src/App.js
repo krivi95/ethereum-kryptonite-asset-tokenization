@@ -89,10 +89,15 @@ class App extends Component {
       <Router>
         <div className="App">
           <ContractContex.Provider value={this.state.contractContext}>
-            <Route path="/" exact component={HomepageScreen}></Route>
-            <Route path="/login" component={LoginScreen}></Route>
-            <Route path="/status" component={StatusScreen}></Route>
-            <Route path="/admin" component={AdminDashboardScreen}></Route>
+            <Route path="/" exact component={HomepageScreen} />
+            <Route path="/login" component={LoginScreen} />
+            <Route path="/admin" component={AdminDashboardScreen} />
+            <Route
+              path="/status"
+              render = {(props) => (
+                <StatusScreen {...props} />
+              )}
+            />
           </ContractContex.Provider>
         </div>
       </Router>

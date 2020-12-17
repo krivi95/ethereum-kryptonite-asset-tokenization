@@ -53,10 +53,18 @@ const useStyles = makeStyles({
 });
 
 export default function KYCStatus(props) {
+    // Address that will be initially displayed in the text field.
+    // Checking if the user has been redirected from the Landing Page form and if so, populate text field with specified address.
+    let addressPlaceholder = "0x1234...";
+    if (props.address){
+        addressPlaceholder = props.address;
+    }
+
     const classes = useStyles();
-    const [address, setAddress] = useState("0x1234...");
+    const [address, setAddress] = useState(addressPlaceholder);
     const [statusMessage, setStatusMessage] = useState("");
     const [isKycCompleted, setIsKycCompleted] = useState(null);
+
 
     function handleChange(event) {
         setAddress(event.target.value);
@@ -68,8 +76,16 @@ export default function KYCStatus(props) {
     async function verifyAddress(event) {
         event.preventDefault();
 
+        let isKycCompleted = false;
+
         // Get flag from token crowdsale smart contract
-        let isKycCompleted = await props.contractContext.kycContract.methods.isKycCompleted(address).call();
+        try {
+            isKycCompleted = await props.contractContext.kycContract.methods.isKycCompleted(address).call();
+        } catch (error) {
+            setStatusMessage("Please enter a valid address.");
+            setIsKycCompleted(isKycCompleted);
+            return;
+        }
 
         // Updating the states
         setIsKycCompleted(isKycCompleted);
