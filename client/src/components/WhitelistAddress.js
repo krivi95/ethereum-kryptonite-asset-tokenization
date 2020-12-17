@@ -66,10 +66,9 @@ export default function WhitelistAddress(props) {
             <Paper className={classes.root} elevation={3}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <h1 className={classes.title}>Sign Up to buy Kryptonite!</h1>
+                        <h1 className={classes.title}>Whitelist address:</h1>
                         <div className={classes.text}>
-                            In order to buy tokens you must first go through KYC process. Once you have been approved (whitelisted)
-                            you will be able to buy Kryptonite tokens. Please check on the status page your KYC process.
+                            Manually approve address to allow investors to buy tokens.
                         </div>
                     </Grid>
                     <Grid item xs={12}>
@@ -86,7 +85,7 @@ export default function WhitelistAddress(props) {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Button className={classes.button} variant="outlined" onClick={handleSubmit} >Submit address</Button>
+                        <Button className={classes.button} variant="outlined" onClick={handleSubmit} >Approve address</Button>
                     </Grid>
                 </Grid>
             </Paper>
