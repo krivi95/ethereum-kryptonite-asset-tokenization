@@ -37,7 +37,7 @@ export default function AdminDashboardScreen() {
                 <div>
                     <AdminHeader />
                     <WhitelistAddress contractContext={web3} />
-                    {requestsLoaded && <RequestsTable requests={requests} title={"Requests"}/>}
+                    {requestsLoaded && <RequestsTable contractContext={web3} requests={requests} title={"Requests"}/>}
                 </div>
             )}
         </ContractContex.Consumer >

@@ -54,6 +54,9 @@ export default function WhitelistAddress(props) {
     }
 
     async function handleSubmit(event) {
+        /**
+         * Interacting with smart contract - Approving KYC for specified address.
+         */
         await props.contractContext.kycContract.methods.approveAddress(address).send({
             from: props.contractContext.accounts[0]
         });

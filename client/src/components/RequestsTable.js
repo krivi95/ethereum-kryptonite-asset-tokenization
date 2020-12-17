@@ -30,15 +30,19 @@ const useStyles = makeStyles({
         color: "white"
     },
     tableContainer: {
-        maxWidth: '90%',
         marginTop: 20,
-        height: 500,
+        height: 450,
         backgroundColor: "#20232a",
         color: "white", border: '1px solid',
         borderRadius: 5,
     },
     text: {
         color: 'white'
+    },
+    title: {
+        color: 'white',
+        fontFamily: 'monospace',
+        fontWeight: 'lighter',
     },
 });
 
@@ -76,6 +80,22 @@ function createRows(requests, classes, approveOrDisapproveRequest) {
 export default function RequestsTable(props) {
     const classes = useStyles();
 
+    async function approveOrDisapproveAddress(address, isKycCompleted) {
+        /**
+         * Interacting with smart contract - Approving KYC for specified address.
+         */
+        if (isKycCompleted) {
+            await props.contractContext.kycContract.methods.approveAddress(address).send({
+                from: props.contractContext.accounts[0]
+            });
+        }
+        else {
+            await props.contractContext.kycContract.methods.revokeAddress(address).send({
+                from: props.contractContext.accounts[0]
+            });
+        }
+    }
+
     const approveOrDisapproveRequest = async (event, requestId) => {
         /**
          * Function that handles the user action and updates the kyc status. 
@@ -85,12 +105,20 @@ export default function RequestsTable(props) {
         let request = props.requests[requestId];
         request.kyc = !request.kyc;
 
+        // Saving address KYC status in smart contract
+        try {
+            await approveOrDisapproveAddress(request.address, request.kyc)
+        } catch (error) {
+            alert('Only onwer of the KYC smart contract can approve or revoke access');
+            return;
+        }
+
         // Save record to the database
         const requessRef = app.database().ref('requests').child(requestId);
         await requessRef.update({
-            kyc: request.kyc 
+            kyc: request.kyc
         });
-        request.kyc? alert("Successfully approved the request!") : alert("Revoked the request!");
+        request.kyc ? alert("Successfully approved the request!") : alert("Revoked the request!");
 
     }
 
@@ -98,6 +126,7 @@ export default function RequestsTable(props) {
 
     return (
         <Container className={classes.container} >
+            <h1 className={classes.title}>Approve/Dissaprove requests (KYC):</h1>
             <TableContainer component={Paper} className={classes.tableContainer}>
                 <h4 align="left">&nbsp;&nbsp;&nbsp;{props.title}</h4>
                 <Table className={classes.table} size="small" aria-label="simple table">
