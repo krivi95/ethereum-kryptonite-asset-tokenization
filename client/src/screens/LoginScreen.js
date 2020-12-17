@@ -12,6 +12,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 
+// React Router
+import { Redirect } from "react-router-dom";
+
 
 const useStyles = makeStyles({
     container: {
@@ -53,6 +56,7 @@ export default function LoginScreen() {
     const classes = useStyles();
     const [email, setEmail] = useState("Email address");
     const [password, setPassword] = useState("Password");
+    const [redirectPage, setRedirectPage] = useState(null);
 
     function emailHandleChange(event) {
         setEmail(event.target.value);
@@ -63,58 +67,64 @@ export default function LoginScreen() {
     }
 
     async function login(event) {
-        alert(email + ' ' + password);
+        setRedirectPage(<Redirect push to="/admin" />);
     }
-    return (
-        <div>
-            <HomepageHeader />
-            <Container className={classes.container} >
-                <Paper className={classes.root} elevation={3}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <a href="https://en.wikipedia.org/wiki/Kryptonite">
-                                <img src="KryptoniteLogo.svg" alt="KryptoniteLogo" style={{ height: "160px", width: "160px" }} />
-                            </a>
-                            <div className={classes.subtitle}>
-                                ERC-20 token backed by <span style={{ color: "#18FF1E" }}>Kryptonite</span> mineral
+
+    if (redirectPage != null) {
+        return redirectPage;
+    }
+    else {
+        return (
+            <div>
+                <HomepageHeader />
+                <Container className={classes.container} >
+                    <Paper className={classes.root} elevation={3}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <a href="https://en.wikipedia.org/wiki/Kryptonite">
+                                    <img src="KryptoniteLogo.svg" alt="KryptoniteLogo" style={{ height: "160px", width: "160px" }} />
+                                </a>
+                                <div className={classes.subtitle}>
+                                    ERC-20 token backed by <span style={{ color: "#18FF1E" }}>Kryptonite</span> mineral
                             </div>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <h1 className={classes.title}>Login page</h1>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    className={classes.button}
+                                    InputProps={{
+                                        className: classes.input
+                                    }}
+                                    id="email"
+                                    label="Email address"
+                                    variant="outlined"
+                                    value={email}
+                                    onChange={emailHandleChange}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    className={classes.button}
+                                    InputProps={{
+                                        className: classes.input
+                                    }}
+                                    type="password"
+                                    id="password"
+                                    label="Password"
+                                    variant="outlined"
+                                    value={password}
+                                    onChange={passwordHandleChange}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button className={classes.button} variant="outlined" onClick={login} >Login</Button>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <h1 className={classes.title}>Login page</h1>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                className={classes.button}
-                                InputProps={{
-                                    className: classes.input
-                                }}
-                                id="email"
-                                label="Email address"
-                                variant="outlined"
-                                value={email}
-                                onChange={emailHandleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                className={classes.button}
-                                InputProps={{
-                                    className: classes.input
-                                }}
-                                type="password"
-                                id="password"
-                                label="Password"
-                                variant="outlined"
-                                value={password}
-                                onChange={passwordHandleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button className={classes.button} variant="outlined" onClick={login} >Login</Button>
-                        </Grid>
-                    </Grid>
-                </Paper>
-            </Container>
-        </div>
-    );
+                    </Paper>
+                </Container>
+            </div>
+        );
+    }
 }

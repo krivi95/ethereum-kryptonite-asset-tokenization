@@ -53,9 +53,9 @@ const useStyles = makeStyles({
 
 export default function LandingPageForm(props) {
     const classes = useStyles();
-    const [firstName, setfirstName] = useState("Nikola");
-    const [lastName, setLastName] = useState("Krivacevic");
-    const [email, setEmail] = useState("krivi@krivi.com");
+    const [firstName, setfirstName] = useState("Clark");
+    const [lastName, setLastName] = useState("Kent");
+    const [email, setEmail] = useState("clark.kent@superman.com");
     const [address, setAddress] = useState("0x123...");
     const [redirectPage, setRedirectPage] = useState(null);
 
