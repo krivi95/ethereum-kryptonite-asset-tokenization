@@ -1,8 +1,10 @@
 // ReactJS components
-import React, { useState } from "react";
+import React, { useState, useContext, useCallback } from "react";
 
 // Local ReactJs components
 import HomepageHeader from "../components/HomepageHeader";
+import { AuthContext } from "../context/AuthContext";
+import app from "../firebase/firebase";
 
 // MaterialUI components
 import Container from '@material-ui/core/Container';
@@ -53,6 +55,7 @@ const useStyles = makeStyles({
 });
 
 export default function LoginScreen() {
+    const { currentUser } = useContext(AuthContext);
     const classes = useStyles();
     const [email, setEmail] = useState("Email address");
     const [password, setPassword] = useState("Password");
@@ -67,11 +70,18 @@ export default function LoginScreen() {
     }
 
     async function login(event) {
-        setRedirectPage(<Redirect push to="/admin" />);
+        event.preventDefault();
+        try {
+            await app.auth().signInWithEmailAndPassword(email, password);
+            console.log('logged in...')
+            setRedirectPage(<Redirect push to="/admin" />);
+        } catch (error) {
+            alert(error);
+        }
     }
 
-    if (redirectPage != null) {
-        return redirectPage;
+    if (currentUser) {
+        return <Redirect push to="/admin" />;
     }
     else {
         return (

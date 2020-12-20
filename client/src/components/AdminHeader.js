@@ -11,6 +11,9 @@ import Button from '@material-ui/core/Button';
 // React Router
 import { Link, Redirect } from "react-router-dom";
 
+// Firebase
+import app from "../firebase/firebase";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -40,6 +43,7 @@ export default function AdminHeader() {
     const [redirectPage, setRedirectPage] = useState(null);
 
     function logout() {
+        app.auth().signOut();
         setRedirectPage(<Redirect push to="/" />);
     }
 

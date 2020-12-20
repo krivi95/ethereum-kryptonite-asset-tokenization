@@ -16,6 +16,8 @@ import ContractContex from "./context/ContractContex";
 
 // React Router
 import { Route, BrowserRouter as Router } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
+import { AuthProvider } from "./context/AuthContext";
 
 import "./App.css";
 
@@ -86,21 +88,23 @@ class App extends Component {
       </div>;
     }
     return (
-      <Router>
-        <div className="App">
-          <ContractContex.Provider value={this.state.contractContext}>
-            <Route path="/" exact component={HomepageScreen} />
-            <Route path="/login" component={LoginScreen} />
-            <Route path="/admin" component={AdminDashboardScreen} />
-            <Route
-              path="/status"
-              render = {(props) => (
-                <StatusScreen {...props} />
-              )}
-            />
-          </ContractContex.Provider>
-        </div>
-      </Router>
+      <AuthProvider>
+        <Router>
+          <div className="App">
+            <ContractContex.Provider value={this.state.contractContext}>
+              <Route path="/" exact component={HomepageScreen} />
+              <Route path="/login" component={LoginScreen} />
+              <PrivateRoute path="/admin" component={AdminDashboardScreen} />
+              <Route
+                path="/status"
+                render={(props) => (
+                  <StatusScreen {...props} />
+                )}
+              />
+            </ContractContex.Provider>
+          </div>
+        </Router>
+      </AuthProvider>
     );
   }
 }
